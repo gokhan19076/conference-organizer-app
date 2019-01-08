@@ -33,7 +33,7 @@ class App extends Component {
         event.preventDefault();
         let conferenceData = this.state.value;
 
-        fetch("http://localhost:8080/conferences", {
+        fetch("https://conferance-organizer-api.herokuapp.com/conferences", {
             method: "POST",
             body: conferenceData,
             headers: {
@@ -51,7 +51,7 @@ class App extends Component {
 
     async getConference(event) {
         event.preventDefault();
-        await fetch("http://localhost:8080/conferences")
+        await fetch("https://conferance-organizer-api.herokuapp.com/conferences")
             .then(response => response.json().then(body => this.setState({
                 page: "tracklist",
                 trackList: body.trackList
