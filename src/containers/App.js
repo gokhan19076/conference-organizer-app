@@ -123,7 +123,7 @@ class App extends Component {
                             {item.morningEventList.map((m, i) => (
                                 <li key={i} className="list-group-item">{m.startTime} {m.name} {m.duration + "min"}</li>
                             ))}
-                            <li className="list-group-item">{"12:00PM Lunch"}</li>
+                            <li className="list-group-item">{"12:00 PM Lunch"}</li>
                             {item.afternoonEventList.map((m, i) => (
                                 <li key={i} className="list-group-item">{m.startTime} {m.name} {m.duration + "min"}</li>
                             ))}
