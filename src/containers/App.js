@@ -9,6 +9,7 @@ class App extends Component {
         this.state = {
             value: '',
             message: '',
+            messageType: "success",
             page: 'form',
             trackList: ''
         };
@@ -18,6 +19,7 @@ class App extends Component {
         this.handleClearForm = this.handleClearForm.bind(this);
         this.getConference = this.getConference.bind(this);
         this.returnForm = this.returnForm.bind(this);
+        this.messageHtml = this.messageHtml.bind(this);
     }
 
     handleTextArea(e) {
@@ -39,23 +41,22 @@ class App extends Component {
             headers: {
                 "Content-Type": "text/plain"
             }
-        })
+        }).then(response => response.status === 201 ? this.setState({message: "Submit process complete successfully", messageType: "success"}) : this.setState({message: "Getting error while submit process working!", messageType: "danger"}))
+
     }
 
     handleClearForm(e) {
         e.preventDefault();
         this.setState({
-            value: ''
+            value: '',
+            message: '',
         });
     }
 
     async getConference(event) {
         event.preventDefault();
         await fetch("https://conferance-organizer-api.herokuapp.com/conferences")
-            .then(response => response.json().then(body => this.setState({
-                page: "tracklist",
-                trackList: body.trackList
-            })))
+            .then(response => response.json().then(body => this.setState({page: "tracklist", trackList: body.trackList, message: ''})))
             .catch(error => console.log("==> Error: ", error));
     }
 
@@ -133,9 +134,21 @@ class App extends Component {
         )
     }
 
+    messageHtml() {
+        if (this.state.message !== "") {
+            return (
+                <div className={"alert alert-" + this.state.messageType} role="alert">
+                    {this.state.message}
+                </div>
+            )
+        }
+        return null
+    }
+
     render() {
         return (
             <div className="app col-md-6">
+                <div>{this.messageHtml()}</div>
                 <h3>Conference Organizer</h3>
                 {this.state.page === "form" ? this.formHtml() : this.trackList()}
             </div>
